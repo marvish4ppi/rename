@@ -46,6 +46,10 @@ def rename_files(base_dir: str, renaming_map: dict, dry_run: bool = False):
                 new_filename = renaming_map[filename]
                 new_path = Path(root) / new_filename
 
+                if new_path.exists():
+                    logging.warning("⚠️ Zielname existiert bereits: %s → Datei wird übersprungen", new_path)
+                    continue
+
                 if dry_run:
                     logging.info("[DRY RUN] Datei gefunden: %s → Umbenennen zu: %s", old_path, new_path)
                 else:
@@ -67,7 +71,7 @@ def main():
     # Konfiguration
     csv_path = "rename.csv"
     base_directory = "/home/marvin/dev/rename/test_dokumente"
-    dry_run = False
+    dry_run = False  # Auf True setzen für Testlauf
 
     setup_logging()
 
